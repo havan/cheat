@@ -12,14 +12,14 @@ def colorize(sheet_content):
 
     try:
         from pygments import highlight
-        from pygments.lexers import BashLexer
+        from pygments.lexers import RstLexer
         from pygments.formatters import TerminalFormatter
 
     # if pygments can't load, just return the uncolorized text
     except ImportError:
         return sheet_content
 
-    return highlight(sheet_content, BashLexer(), TerminalFormatter())
+    return highlight(sheet_content, RstLexer(), TerminalFormatter())
 
 
 def die(message):
