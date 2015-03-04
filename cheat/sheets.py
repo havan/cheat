@@ -29,20 +29,17 @@ def default_path():
 
 
 def get():
-    """ Assembles a dictionary of cheatsheets as name => file-path """
+    """ Assembles a dictionary of cheatsheets as reldir/name => file-path """
     cheats = {}
 
-    # otherwise, scan the filesystem
+    # Scan cheat paths and assemble a dictionary.
+    # Cheats can be organized in subdirectories in cheat dirs.
     for cheat_dir in reversed(paths()):
-        cheats.update(
-            dict([
-                (cheat, os.path.join(cheat_dir, cheat))
-                for cheat in os.listdir(cheat_dir)
-                if not cheat.startswith('.')
-                and not cheat.startswith('__')
-            ])
-        )
-
+        for root, subdirs, cheat_files in os.walk(cheat_dir):
+            for cheat in cheat_files:
+                cheat_path = os.path.join(root, cheat)
+                cheat_name = os.path.relpath(os.path.join(root, cheat), cheat_dir)
+                cheats[cheat_name] = cheat_path
     return cheats
 
 
